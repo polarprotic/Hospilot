@@ -1,0 +1,47 @@
+{
+  "$schema": "hospilot/resource_budget/v1",
+  "resource_type": "diagnostic",
+  "budget_currency": "Priority Points",
+  "shift_duration_hours": 8,
+  "base_shift_budget": 700,
+  "department_budgets": {
+    "ER": {
+      "base": 700,
+      "demand_factor": 1.20,
+      "criticality_factor": 1.15,
+      "scarcity_factor": 1.05,
+      "fairness_adjustment": 0.99,
+      "calculated_shift_budget": 1000,
+      "formula": "700 * 1.20 * 1.15 * 1.05 * 0.99 = 1000"
+    },
+    "OT": {
+      "base": 700,
+      "demand_factor": 1.05,
+      "criticality_factor": 1.05,
+      "scarcity_factor": 1.00,
+      "fairness_adjustment": 1.04,
+      "calculated_shift_budget": 800,
+      "formula": "700 * 1.05 * 1.05 * 1.00 * 1.04 = 800"
+    },
+    "ICU": {
+      "base": 700,
+      "demand_factor": 1.00,
+      "criticality_factor": 1.00,
+      "scarcity_factor": 1.00,
+      "fairness_adjustment": 1.00,
+      "calculated_shift_budget": 700,
+      "formula": "700 * 1.00 * 1.00 * 1.00 * 1.00 = 700"
+    }
+  },
+  "budget_consumption_rules": {
+    "formula": "Cost = Bid * ContentionFactor * OutcomeFactor * CommitmentRate",
+    "commitment_rate": 0.25,
+    "contention_factor_range": [0.8, 1.3],
+    "outcome_factor": {
+      "win": 1.0,
+      "lose_or_withdraw": 0.10
+    },
+    "hourly_recovery_points": 100,
+    "surge_adjustment_cap": 150
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "hospilot/resource_caps/v1",
+  "resource_type": "diagnostic",
+  "utility_scale": {
+    "min_utility": 0,
+    "max_utility": 200,
+    "normalized_ceiling": 200
+  },
+  "components": [
+    {
+      "name": "ClinicalBenefit",
+      "max_points": 60,
+      "description": "Expected reduction in harm/mortality from rapid diagnostic scan/lab results",
+      "sub_signals": {
+        "deterioration_risk_weight": 0.30,
+        "icu_benefit_weight": 0.25,
+        "oxygen_severity_weight": 0.20,
+        "organ_failure_risk_weight": 0.15,
+        "comorbidity_risk_weight": 0.10
+      }
+    },
+    {
+      "name": "Urgency",
+      "max_points": 40,
+      "description": "Clinical time-to-harm window requiring immediate diagnostic imaging",
+      "sub_signals": {
+        "news2_weight": 0.35,
+        "oxygen_trend_weight": 0.30,
+        "vital_trend_weight": 0.20,
+        "time_to_critical_weight": 0.15
+      }
+    },
+    {
+      "name": "DelayImpact",
+      "max_points": 25,
+      "description": "Harm caused by additional waiting for scan/lab results",
+      "formula": "P(Deterioration|delay) * SeverityOfDeterioration * DelayDurationFactor"
+    },
+    {
+      "name": "ThroughputImpact",
+      "max_points": 25,
+      "description": "Unlocking downstream beds, queues, and clinical workflows",
+      "sub_signals": {
+        "bed_release_weight": 0.40,
+        "nursing_capacity_weight": 0.30,
+        "queue_impact_weight": 0.20,
+        "downstream_impact_weight": 0.10
+      }
+    },
+    {
+      "name": "OperationalImpact",
+      "max_points": 20,
+      "description": "Reduction in operational strain, surgery cancellation, or ER crowding"
+    },
+    {
+      "name": "FinancialImpact",
+      "max_points": 10,
+      "description": "Secondary financial consequence / revenue impact (kept low to prioritize clinical safety)",
+      "sub_signals": {
+        "expected_revenue_weight": 0.40,
+        "avoided_cost_weight": 0.30,
+        "capacity_value_weight": 0.30
+      }
+    },
+    {
+      "name": "AlternativePenalty",
+      "min_points": -20,
+      "max_points": 0,
+      "description": "Penalty applied when viable alternative diagnostics or safe holding options (HDU/PACU) exist",
+      "formula": "-MaxPenalty * AlternativeQuality * AlternativeDuration"
+    },
+    {
+      "name": "ResourceStressPenalty",
+      "min_points": -10,
+      "max_points": 0,
+      "description": "Opportunity cost of consuming scarce diagnostic scanner capacity under high hospital load"
+    }
+  ]
+}

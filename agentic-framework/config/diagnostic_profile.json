@@ -1,0 +1,46 @@
+{
+  "$schema": "hospilot/resource_profile/v1",
+  "resource_type": "diagnostic",
+  "resource_id": "DIAG_MRI_CT_LAB_01",
+  "name": "Diagnostic Imaging & Laboratory Slot",
+  "modalities": [
+    "MRI",
+    "CT_SCAN",
+    "CRITICAL_LAB"
+  ],
+  "slot_duration_minutes": 30,
+  "operating_hours": "24/7",
+  "bidding_agents": [
+    {
+      "agent_id": "ER",
+      "name": "Emergency Room Agent",
+      "priority_tier": 1,
+      "default_base_budget": 700
+    },
+    {
+      "agent_id": "OT",
+      "name": "Operating Theatre Agent",
+      "priority_tier": 2,
+      "default_base_budget": 700
+    },
+    {
+      "agent_id": "ICU",
+      "name": "Intensive Care Unit Agent",
+      "priority_tier": 1,
+      "default_base_budget": 700
+    }
+  ],
+  "auction_rules": {
+    "max_rounds": 3,
+    "round_decision_window_seconds": 120,
+    "currency": "Utility / Priority Points",
+    "hidden_bidding": true,
+    "allow_mid_auction_recalculation": true,
+    "allow_withdrawal": true,
+    "tie_breaker": [
+      "clinical_urgency",
+      "waiting_time"
+    ]
+  },
+  "status": "ACTIVE"
+}
